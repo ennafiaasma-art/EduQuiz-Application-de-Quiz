@@ -15,7 +15,7 @@ class UserRepository
 
    public function create(User $user)
    {
-       $stateSql = $this->db->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?) ");
+       $stateSql = $this->pdo->prepare("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?) ");
        return $stateSql->execute([
            $user->getName(),
            $user->getEmail(),
@@ -24,4 +24,14 @@ class UserRepository
        ]);
 
    }
+
+    public function findByEmail(string $email): ?array
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+
+        $user = $stmt->fetch(PDO::FETCH_OBJ);
+
+        return $user ?: null;
+    }
 }
