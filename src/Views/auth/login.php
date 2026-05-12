@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($user["role_name"] === "teacher") {
             header("Location: /EduQuiz-Application-de-Quiz2/src/Views/teacher/dashboard.php");
         } else {
-            header("Location: /student/dashboard.php");
+            header("Location: /EduQuiz-Application-de-Quiz2/src/Views/student/dashboard.php");
         }
 
         exit;
@@ -49,17 +49,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <h1 class="text-2xl font-bold mb-6 text-center">Login</h1>
 
-    <!-- ERROR MESSAGE -->
     <?php if (!empty($error)): ?>
         <p class="text-red-500 text-center mb-4">
             <?= $error ?>
         </p>
     <?php endif; ?>
 
-    <!-- LOGIN FORM -->
     <form method="POST" class="flex flex-col gap-4">
 
-        <!-- EMAIL -->
         <input
                 type="email"
                 name="email"
@@ -68,7 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 required
         >
 
-        <!-- PASSWORD -->
         <input
                 type="password"
                 name="password"
@@ -77,7 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 required
         >
 
-        <!-- BUTTON -->
         <button
                 type="submit"
                 class="bg-indigo-600 text-white p-3 rounded-xl hover:bg-indigo-700"

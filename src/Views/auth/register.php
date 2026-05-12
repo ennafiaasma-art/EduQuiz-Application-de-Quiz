@@ -64,8 +64,7 @@ $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             name="name"
             placeholder="Full Name"
             class="border p-3 rounded-xl"
-            required
-        >
+            >
 
         <!-- Email -->
         <input
@@ -73,11 +72,10 @@ $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             name="email"
             placeholder="Email"
             class="border p-3 rounded-xl"
-            required
         >
 
         <!-- Role -->
-        <select name="role" class="border p-3 rounded-xl" required>
+        <select name="role" class="border p-3 rounded-xl"  >
             <option value="">Select Role</option>
 
             <?php foreach ($roles as $role): ?>
@@ -94,7 +92,7 @@ $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             name="password"
             placeholder="Password"
             class="border p-3 rounded-xl"
-            required
+             
         >
 
         <!-- Button -->

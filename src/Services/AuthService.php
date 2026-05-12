@@ -24,6 +24,10 @@ class AuthService
 
     public function register(string $name, string $email, string $password, int $role)
     {
+        if(empty($name) || empty($email) || empty($password)) {
+             throw new \Exception("All fields are required");
+        }
+        
         if ($this->repo->emailExists($email)) {
             throw new \Exception("Email already exists");
         }
