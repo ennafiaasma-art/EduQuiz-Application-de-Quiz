@@ -1,32 +1,77 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Src\Entities;
 
-class Student extends User
+abstract class User
 {
-    private string $studentCode;
+    protected int $id;
+    protected string $name;
+    protected string $email;
+    protected string $password;
+    protected int $roleId;
 
     public function __construct(
-        int $id,
+        int    $id,
         string $name,
         string $email,
         string $password,
-        string $studentCode
-    ) {
-        parent::__construct($id, $name, $email, $password);
-
-        $this->studentCode = $studentCode;
+        int    $roleId
+    )
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->email = $email;
+        $this->password = $password;
+        $this->roleId = $roleId;
     }
 
-    public function getStudentCode(): string
+    // ================= GETTERS =================
+
+    public function getId(): int
     {
-        return $this->studentCode;
+        return $this->id;
     }
 
-    public function setStudentCode(string $studentCode): void
+    public function getName(): string
     {
-        $this->studentCode = $studentCode;
+        return $this->name;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function getRoleId(): int
+    {
+        return $this->roleId;
+    }
+
+    // ================= SETTERS =================
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function setRoleId(int $roleId): void
+    {
+        $this->roleId = $roleId;
     }
 }
