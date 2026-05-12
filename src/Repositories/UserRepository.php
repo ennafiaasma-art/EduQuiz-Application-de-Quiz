@@ -30,7 +30,7 @@ class UserRepository
         $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);
 
-        $user = $stmt->fetch(PDO::FETCH_OBJ);
+        $user = $stmt->fetch(\PDO::FETCH_OBJ);
 
         return $user ?: null;
     }

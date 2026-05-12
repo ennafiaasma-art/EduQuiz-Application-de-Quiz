@@ -30,4 +30,18 @@ class AuthService
 
     }
 
+
+    public function login(string $email, string $password): ?array
+    {
+        $user = $this->repo->findByEmail($email);
+
+        if (!$user) return null;
+
+        if (password_verify($password, $user->password)) {
+            return $user;
+        }
+
+        return null;
+    }
+
 }
