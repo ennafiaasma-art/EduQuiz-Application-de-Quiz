@@ -33,8 +33,17 @@ class UserRepository
         WHERE users.email = ?
     ");        $stmt->execute([$email]);
 
-        $user = $stmt->fetch(\PDO::FETCH_OBJ);
+        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         return $user ?: null;
+    }
+
+    public function emailExists(string $email): bool
+    {
+        $stmt = $this->pdo->prepare("SELECT id FROM users WHERE email = ?");
+
+        $stmt->execute([$email]);
+
+        return $stmt->fetch() !== false;
     }
 }

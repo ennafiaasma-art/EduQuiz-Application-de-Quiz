@@ -7,17 +7,22 @@ require_once __DIR__ . "/../../../config/DB.php";
 $auth = new \Src\Services\AuthService();
 
 $message = "";
+$error = "";
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+try {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $auth->register(
-        $_POST["name"],
-        $_POST["email"],
-        $_POST["password"],
-        (int)$_POST["role"]
-    );
+        $auth->register(
+            $_POST["name"],
+            $_POST["email"],
+            $_POST["password"],
+            (int)$_POST["role"]
+        );
 
-    $message = "Account created successfully";
+        $message = "Account created successfully";
+    }
+} catch (Exception $e) {
+    $error = $e->getMessage();
 }
 
 $sql = "SELECT * FROM roles";
@@ -42,6 +47,10 @@ $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <h1 class="text-3xl font-bold mb-6 text-center">Create Account</h1>
 
     <!-- MESSAGE -->
+    <?php if (!empty($error)): ?>
+        <p style="color:red"><?= $error ?></p>
+    <?php endif; ?>
+
     <?php if ($message): ?>
         <p class="text-green-600 text-center mb-4"><?= $message ?></p>
     <?php endif; ?>

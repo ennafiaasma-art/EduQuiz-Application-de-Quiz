@@ -24,6 +24,9 @@ class AuthService
 
     public function register(string $name, string $email, string $password, int $role)
     {
+        if ($this->repo->emailExists($email)) {
+            throw new \Exception("Email already exists");
+        }
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
         if ($role === 1) {
@@ -59,4 +62,6 @@ class AuthService
 
         return null;
     }
+
+
 }
