@@ -5,21 +5,21 @@ namespace Src\Entities;
 
 abstract class User
 {
-    protected int $id;
+
     protected string $name;
     protected string $email;
     protected string $password;
     protected int $roleId;
 
     public function __construct(
-        int    $id,
+
         string $name,
         string $email,
         string $password,
         int    $roleId
     )
     {
-        $this->id = $id;
+        
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
@@ -28,10 +28,6 @@ abstract class User
 
     // ================= GETTERS =================
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
 
     public function getName(): string
     {

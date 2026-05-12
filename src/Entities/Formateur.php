@@ -9,15 +9,15 @@ class Formateur extends User
 
 
     public function __construct(
-        int    $id,
+
         string $name,
         string $email,
-        string $password
+        string $password,
+        int    $roleId
 
     )
     {
-        parent::__construct($id, $name, $email, $password);
-
+        parent::__construct($name, $email, $password, $roleId);
 
     }
 
