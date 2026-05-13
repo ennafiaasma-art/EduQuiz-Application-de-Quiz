@@ -17,11 +17,20 @@
 <body>
 
 <nav class="bg-white shadow">
-    <div class="container">
+    <div class="container mx-auto flex justify-between p-4">
+          <h1 class="text-xl font-bold text-indigo-600">EduQuiz</h1>
 
+      <div class="space-x-4">
+          <a href="/" class="text-gray-700">Accueil</a>
+          <a href="/login" class="text-indigo-600">Connexion</a>
+          <a href="/register" class="bg-indigo-600 text-white px-4 py-2 rounded">
+              Inscription
+          </a>
 
 
     </div>
+     </div>
+
 
 </nav>
     
