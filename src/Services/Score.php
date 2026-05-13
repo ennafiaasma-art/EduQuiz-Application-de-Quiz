@@ -1,38 +1,41 @@
-<?php    
-require_once "./config/Database.php";
-class Score {
+<?php
 
-    private int $sommepoint;
-    private int $nmbquestion;
 
-    public function __construct(int $sommepoint, int $nmbquestion){
+class QuizCorrectionService
+{
+    public function corriger(array $questions, array $reponsesEtudiant): array
+    {
+        $score = 0;
+        $total = count($questions);
 
-        $this->sommepoint = $sommepoint;
-        $this->nmbquestion = $nmbquestion;
-    }
+        $resultats = [];
 
-    public function calculScore(){
+        foreach ($questions as $question) {
 
-        return ($this->sommepoint / $this->nmbquestion) * 100;
+            $id = $question['id'];
+
+            $bonneReponse = $question['bonne_reponse'];
+
+            $reponseEtudiant = $reponsesEtudiant[$id] ?? null;
+
+            $estCorrect = $reponseEtudiant === $bonneReponse;
+
+            if ($estCorrect) {
+                $score++;
+            }
+
+            $resultats[] = [
+                'question' => $question['question'],
+                'bonne_reponse' => $bonneReponse,
+                'reponse_etudiant' => $reponseEtudiant,
+                'correct' => $estCorrect
+            ];
+        }
+
+        return [
+            'score' => $score,
+            'total' => $total,
+            'resultats' => $resultats
+        ];
     }
 }
-
-$score = new Score(8, 10);
-
-echo "Le score est : " . $score->calculScore() . "%";
-
-?>
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
