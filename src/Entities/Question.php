@@ -10,4 +10,8 @@ class Question{
         $this->id = $id;
         $this->questionText= $text;
     }
+
+    public function getId(): int {return $this->id;}
+    public function getQuestionText(): string { return $this->questionText;}
+    
 }
