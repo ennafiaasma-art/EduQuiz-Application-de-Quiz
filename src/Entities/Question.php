@@ -17,5 +17,6 @@ class Question{
     public function addAnswer($answer): void{
         $this->answers[] = $answer;
     }
+    public function getAnswers(): arry { return $this->answers;}
 
 }
