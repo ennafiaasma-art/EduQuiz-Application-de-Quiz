@@ -10,4 +10,9 @@ class QuizRepository{
     public function __construct($db){
         $this->db = $db;
     }
+    public function findByCode(string $code){
+        $stmt = $this->db->prepare("SELECT * FROM quizzes WHERE accesscode = :code");
+        $stmt->executr(['code'=>$code]);
+        return $stmt->fetch(PDO::FETCH_OBG);
+    }
 }
