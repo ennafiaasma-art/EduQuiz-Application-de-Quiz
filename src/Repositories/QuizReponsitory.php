@@ -20,5 +20,9 @@ class QuizRepository{
         FROM questions q
         LEFT JOIN answers a ON q.id = a.question_id
         WHERE q.quiz_id = :quiz_id";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['quiz_id'=>$quizId]);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 }
