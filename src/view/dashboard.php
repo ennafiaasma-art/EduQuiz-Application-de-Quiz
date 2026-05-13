@@ -10,7 +10,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard Étudiant</title>
+  <title>Dashboard Etudiant</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -21,7 +21,7 @@
 
   <!-- Sidebar -->
   <aside class="w-64 bg-slate-800 text-white p-6">
-    <h2 class="text-2xl font-bold mb-6">🎓 Étudiant</h2>
+    <h2 class="text-2xl font-bold mb-6">Etudiant</h2>
 
    
 
@@ -38,7 +38,7 @@
 
     <!-- Header -->
     <h1 class="text-3xl font-bold mb-6">
-      Bienvenue Ahmed 👋
+      Bienvenue Ahmed 
     </h1>
 
     <!-- Stats -->
