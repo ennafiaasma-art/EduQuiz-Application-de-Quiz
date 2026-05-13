@@ -13,5 +13,9 @@ class Question{
 
     public function getId(): int {return $this->id;}
     public function getQuestionText(): string { return $this->questionText;}
-    
+
+    public function addAnswer($answer): void{
+        $this->answers[] = $answer;
+    }
+
 }
