@@ -58,7 +58,7 @@ $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- FORM -->
     <form method="POST" class="flex flex-col gap-5">
 
-        <!-- Name -->
+       
         <input
             type="text"
             name="name"
@@ -66,7 +66,7 @@ $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             class="border p-3 rounded-xl"
             >
 
-        <!-- Email -->
+      
         <input
             type="email"
             name="email"
@@ -74,7 +74,7 @@ $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             class="border p-3 rounded-xl"
         >
 
-        <!-- Role -->
+   
         <select name="role" class="border p-3 rounded-xl"  >
             <option value="">Select Role</option>
 
@@ -95,7 +95,7 @@ $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
              
         >
 
-        <!-- Button -->
+    
         <button
             type="submit"
             class="bg-indigo-600 text-white p-3 rounded-xl hover:bg-indigo-700"
@@ -105,7 +105,7 @@ $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     </form>
 
-    <!-- LOGIN -->
+   
     <p class="text-center text-sm mt-6">
         Already have an account?
         <a href="login.php" class="text-indigo-600 font-bold">Login</a>
