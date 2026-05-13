@@ -15,4 +15,10 @@ class QuizRepository{
         $stmt->executr(['code'=>$code]);
         return $stmt->fetch(PDO::FETCH_OBG);
     }
+    public function getFullQuizData(int $quizId):arry{
+        $sql = "SELECT q.id as q_id, q.question, a.id as a_id, a.answer_text
+        FROM questions q
+        LEFT JOIN answers a ON q.id = a.question_id
+        WHERE q.quiz_id = :quiz_id";
+    }
 }
