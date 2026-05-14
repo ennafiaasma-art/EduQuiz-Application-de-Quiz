@@ -13,10 +13,10 @@ try {
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $auth->register(
-            $_POST["name"],
-            $_POST["email"],
-            $_POST["password"],
-            (int)$_POST["role"]
+            $_POST["name"] ?? '',
+            $_POST["email"] ?? '',
+            $_POST["password"] ?? '',
+            (int)($_POST["role"] ?? 0)
         );
 
         $message = "Account created successfully";

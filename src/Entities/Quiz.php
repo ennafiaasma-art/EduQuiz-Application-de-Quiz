@@ -6,20 +6,23 @@ namespace Src\Entities;
 
 class Quiz
 {
-    private int $id;
+     
     private string $title;
     private string $description;
     private string $accessCode;
+    private int $teacherId;
 
-    public function getId(): int
+    public function __construct( string $title, string $description, string $accessCode, int $teacherId)
     {
-        return $this->id;
+       
+        $this->title = $title;
+        $this->description = $description;
+        $this->accessCode = $accessCode;
+        $this->teacherId = $teacherId;
     }
 
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
+ 
+ 
 
     public function getTitle(): string
     {
@@ -49,5 +52,15 @@ class Quiz
     public function setAccessCode(string $accessCode): void
     {
         $this->accessCode = $accessCode;
+    }
+
+    public function getTeacherId(): int
+    {
+        return $this->teacherId;
+    }
+
+    public function setTeacherId(int $teacherId): void
+    {
+        $this->teacherId = $teacherId;
     }
 }

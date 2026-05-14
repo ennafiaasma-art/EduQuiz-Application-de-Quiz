@@ -13,17 +13,17 @@ $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+    $email = $_POST["email"] ?? '';
+    $password = $_POST["password"] ?? '';
 
     $user = $auth->login($email, $password);
 
     if ($user) {
         $_SESSION["user"] = $user;
-        if ($user["role_name"] === "teacher") {
-            header("Location: /EduQuiz-Application-de-Quiz2/src/Views/teacher/dashboard.php");
+        if (($user["role_name"] ?? '') === "teacher") {
+            header("Location: ../teacher/dashboard.php");
         } else {
-            header("Location: /EduQuiz-Application-de-Quiz2/src/Views/student/dashboard.php");
+            header("Location: ../student/dashboard.php");
         }
 
         exit;
