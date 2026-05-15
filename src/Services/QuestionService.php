@@ -39,4 +39,89 @@ class QuestionService
         return $this->createQuestion($quizId, $question);
     }
 
+
+
+     public function updateQuestion(int $id, string $text): bool
+    {
+        if ($id <= 0 || empty(trim($text))) {
+            return false;
+        }
+
+        try {
+            if (!$this->repo->questionExists($id)) {
+                return false;
+            }
+
+            return $this->repo->update($id, trim($text));
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Backward-compatible alias
+     */
+    public function update(int $id, string $question): bool
+    {
+        return $this->updateQuestion($id, $question);
+    }
+
+
+     public function deleteQuestion(int $id): bool
+    {
+        if ($id <= 0) {
+            return false;
+        }
+
+        try {
+            if (!$this->repo->questionExists($id)) {
+                return false;
+            }
+
+            return $this->repo->delete($id);
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Backward-compatible alias
+     */
+    public function delete(int $id): bool
+    {
+        return $this->deleteQuestion($id);
+    }
+
+    /**
+     * Get one question
+     */
+    public function findById(int $id): ?array
+    {
+        if ($id <= 0) {
+            return null;
+        }
+
+        try {
+            return $this->repo->findById($id);
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Get all questions by quiz
+     */
+    public function getQuestionsByQuiz(int $quizId): array
+    {
+        if ($quizId <= 0) {
+            return [];
+        }
+
+        try {
+            return $this->repo->getQuestionsByQuiz($quizId);
+        } catch (\Throwable $e) {
+            return [];
+        }
+    }
+
  }
