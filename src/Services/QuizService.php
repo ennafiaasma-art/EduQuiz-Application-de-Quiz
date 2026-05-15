@@ -67,5 +67,19 @@ class QuizService
         );
     }
 
+    public function deleteQuiz(int $id)
+    {
+        return $this->repo->delete($id);
+    }
+
+    public function getQuizById(int $id)
+    {
+        try {
+            return $this->repo->findById($id);
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
 
 }
