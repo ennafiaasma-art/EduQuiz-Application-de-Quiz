@@ -28,7 +28,7 @@ class QuizRepository
         ]);
     }
 
-    public function allByTeacher(int $teacherId): array
+    public function allByTeacher(int $teacherId)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM quizzes WHERE teacher_id = ?"
         );
@@ -36,6 +36,16 @@ class QuizRepository
         $stmt->execute([$teacherId]);
 
         return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function findById(int $id)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM quizzes WHERE id = ?");
+        $stmt->execute([$id]);
+
+        $quiz = $stmt->fetch(PDO::FETCH_OBJ);
+
+        return $quiz ?: null;
     }
 
 }
