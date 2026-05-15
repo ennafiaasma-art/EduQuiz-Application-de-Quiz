@@ -1,29 +1,36 @@
 <?php
 
+session_start();
+
 $baseDir = dirname(__DIR__);
 
-require_once $baseDir . '/config/Database.php';
-require_once $baseDir . '/src/Entities/Question.php'; 
+if (isset($_SESSION['user'])) {
+    if (($_SESSION['user']['role_name'] ?? '') === 'teacher') {
+        header('Location: ../src/Views/teacher/dashboard.php');
+    } else {
+        header('Location: ../src/Views/student/dashboard.php');
+    }
+    exit;
+}
+
 require_once $baseDir . '/src/Repositories/QuizRepository.php';
 
-use App\Repositories\QuizRepository;
-
-$db = (new Database())->getConnection();
-$quizRepo = new QuizRepository($db);
-
+$quizRepo = new \Src\Repositories\QuizRepository();
 $action = $_GET['action'] ?? 'home';
+$error = null;
 
 if ($action === 'start_quiz') {
-    $code = $_POST['quiz_code'] ?? '';
+    $code = trim($_POST['quiz_code'] ?? '');
     $quiz = $quizRepo->findByCode($code);
 
     if ($quiz) {
-        $questions = $quizRepo->getFullQuizData($quiz['id']);
+        $quizId = (int)($quiz->id ?? 0);
+        $questions = $quizRepo->getFullQuizData($quizId);
         include $baseDir . '/src/Views/take_quiz.php';
-    } else {
-        echo "Code incorrect !";
+        exit;
     }
-} else {
-   
-    include $baseDir . '/src/Views/home.php';
+
+    $error = 'Code incorrect !';
 }
+
+include $baseDir . '/src/Views/home.php';

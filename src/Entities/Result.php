@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Src\Entities;
 
-class Question
+class Result
 {
     private int $id;
-    private string $text;
+    private int $studentId;
     private int $quizId;
+    private float $score;
 
     public function getId(): int
     {
@@ -20,14 +21,14 @@ class Question
         $this->id = $id;
     }
 
-    public function getText(): string
+    public function getStudentId(): int
     {
-        return $this->text;
+        return $this->studentId;
     }
 
-    public function setText(string $text): void
+    public function setStudentId(int $studentId): void
     {
-        $this->text = $text;
+        $this->studentId = $studentId;
     }
 
     public function getQuizId(): int
@@ -38,5 +39,15 @@ class Question
     public function setQuizId(int $quizId): void
     {
         $this->quizId = $quizId;
+    }
+
+    public function getScore(): float
+    {
+        return $this->score;
+    }
+
+    public function setScore(float $score): void
+    {
+        $this->score = $score;
     }
 }
