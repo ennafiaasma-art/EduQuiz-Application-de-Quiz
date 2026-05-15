@@ -67,5 +67,11 @@ class QuizRepository
         return $stmt->execute([$title, $description, $id]);
     }
 
+    public function delete(int $id)
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM quizzes WHERE id = ?");
+
+        return $stmt->execute([$id]);
+    }
 
 }
