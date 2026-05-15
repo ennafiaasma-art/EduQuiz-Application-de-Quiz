@@ -43,4 +43,9 @@ class QuizService
         }
     }
 
+    public function generateAccessCode()
+    {
+        return strtoupper(substr(md5(uniqid()), 0, 6));
+    }
+
 }
