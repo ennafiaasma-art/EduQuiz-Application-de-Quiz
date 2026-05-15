@@ -35,6 +35,10 @@ elseif ($action ==='submit_quiz'){
     $stmt->execute(['quiz_id' =>$quizId]);
     $correctAnswersData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    
+    $correctAnswers = [];
+    foreach ($correctAnswersData as $row){
+        $correctAnswers[$row['question_id']] = $row['id'];
+        
+    }
 }
 ?>
