@@ -28,4 +28,14 @@ class QuizRepository
         ]);
     }
 
+    public function allByTeacher(int $teacherId): array
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM quizzes WHERE teacher_id = ?"
+        );
+
+        $stmt->execute([$teacherId]);
+
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
 }
