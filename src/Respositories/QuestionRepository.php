@@ -28,4 +28,9 @@ class QuestionRepository
     }
 
     
+
+    public function update(int $id, string $question): bool{
+
+    }
+
     }
