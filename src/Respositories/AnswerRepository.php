@@ -30,6 +30,8 @@ class AnswerRepository{
         ]);
     }
 
+    public function Rec_Reponses_Question(int $questionId): array
+
 
 
 }
