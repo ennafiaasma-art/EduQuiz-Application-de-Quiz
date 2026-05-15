@@ -48,7 +48,7 @@ public function create(
         return $this->createAnswer($questionId, $answer, $isCorrect);
     }
 
-
+// Récupérer les réponses d'une question
 
      public function getAnswersByQuestion(int $questionId): array
     {
@@ -61,6 +61,26 @@ public function create(
         } catch (\Throwable $e) {
             return [];
         }
+    }
+
+// Supprimer les réponses d'une question
+     public function deleteAnswersByQuestion(int $questionId): bool
+    {
+        if ($questionId <= 0) {
+            return false;
+        }
+
+        try {
+            return $this->repo->deleteByQuestion($questionId);
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+
+     public function deleteByQuestion(int $questionId): bool
+    {
+        return $this->deleteAnswersByQuestion($questionId);
     }
 
 
