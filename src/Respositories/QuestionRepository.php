@@ -61,6 +61,17 @@ class QuestionRepository
 
         return $question ?: null;
     }
+
+     public function getQuestionsByQuiz(int $quizId): array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT * FROM questions WHERE quiz_id = ? ORDER BY id DESC"
+        );
+
+        $stmt->execute([$quizId]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
         
 
 
