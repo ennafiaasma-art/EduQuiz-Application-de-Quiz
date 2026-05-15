@@ -17,26 +17,27 @@ JOIN answers a ON a.question_id = q.id
 ";
 
 $stmt = $pdo->query($sql);
-$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$data = $stmt->fetchAll(PDO::FETCH_OBJ);
 
 
 $questions = [];
 
 foreach ($data as $row) {
-    $qid = $row['question_id'];
+
+    $qid = $row->question_id;
 
     if (!isset($questions[$qid])) {
         $questions[$qid] = [
             'id' => $qid,
-            'question' => $row['question'],
+            'question' => $row->question,
             'answers' => []
         ];
     }
 
     $questions[$qid]['answers'][] = [
-        'id' => $row['answer_id'],
-        'text' => $row['answer_text'],
-        'is_correct' => $row['is_correct']
+        'id' => $row->answer_id,
+        'text' => $row->answer_text,
+        'is_correct' => $row->is_correct
     ];
 }
 
@@ -52,6 +53,7 @@ class QuizCorrectionService
         foreach ($questions as $question) {
 
             $qid = $question['id'];
+
             $selectedAnswerId = $reponsesEtudiant[$qid] ?? null;
 
             $isCorrect = false;
@@ -60,13 +62,15 @@ class QuizCorrectionService
 
             foreach ($question['answers'] as $answer) {
 
+                
                 if ($answer['is_correct']) {
                     $bonneReponse = $answer['text'];
                 }
 
+               
                 if ($answer['id'] == $selectedAnswerId) {
                     $reponseEtudiantText = $answer['text'];
-                    $isCorrect = $answer['is_correct'] == 1;
+                    $isCorrect = ($answer['is_correct'] == 1);
                 }
             }
 
@@ -90,6 +94,7 @@ class QuizCorrectionService
     }
 }
 
+
 $reponsesEtudiant = $_POST['reponses'] ?? [];
 
 $service = new QuizCorrectionService();
@@ -101,7 +106,7 @@ $result = $service->corriger($questions, $reponsesEtudiant);
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Quiz Result</title>
+    <title>Résultat Quiz</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -110,6 +115,7 @@ $result = $service->corriger($questions, $reponsesEtudiant);
 <div class="max-w-4xl mx-auto mt-10">
 
     <div class="bg-white p-6 rounded-xl shadow text-center mb-6">
+
         <h1 class="text-2xl font-bold">Résultat du Quiz</h1>
 
         <p class="text-lg mt-2">
@@ -120,11 +126,12 @@ $result = $service->corriger($questions, $reponsesEtudiant);
         </p>
 
         <p class="text-gray-500">
-            <?= round(($result['score'] / max($result['total'],1)) * 100) ?>%
+            <?= round(($result['score'] / max($result['total'], 1)) * 100) ?>%
         </p>
+
     </div>
 
-  
+   
     <div class="space-y-4">
 
         <?php foreach ($result['resultats'] as $r): ?>
@@ -132,21 +139,21 @@ $result = $service->corriger($questions, $reponsesEtudiant);
             <div class="bg-white p-5 rounded-xl shadow">
 
                 <h2 class="font-semibold text-lg mb-3">
-                    <?= $r['question'] ?>
+                    <?= htmlspecialchars($r['question']) ?>
                 </h2>
 
                 <p>
                     <span class="font-medium">Votre réponse :</span>
                     <span class="<?= $r['correct'] ? 'text-green-600' : 'text-red-600' ?>">
-                        <?= $r['reponse_etudiant'] ?? 'Non répondu' ?>
+                        <?= htmlspecialchars($r['reponse_etudiant'] ?? 'Non répondu') ?>
                     </span>
                 </p>
 
                 <?php if (!$r['correct']): ?>
-                    <p>
+                    <p class="mt-1">
                         <span class="font-medium">Bonne réponse :</span>
                         <span class="text-green-600">
-                            <?= $r['bonne_reponse'] ?>
+                            <?= htmlspecialchars($r['bonne_reponse']) ?>
                         </span>
                     </p>
                 <?php endif; ?>
