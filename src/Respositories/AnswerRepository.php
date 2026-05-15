@@ -30,7 +30,15 @@ class AnswerRepository{
         ]);
     }
 
-    public function Rec_Reponses_Question(int $questionId): array
+    public function Rec_Reponses_Question(int $questionId): array {
+        $stmt = $this->pdo->prepare(
+            "SELECT * FROM answers WHERE question_id = ? ORDER BY id ASC"
+        );
+
+        $stmt->execute([$questionId]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
 
