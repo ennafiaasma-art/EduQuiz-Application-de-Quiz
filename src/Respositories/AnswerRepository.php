@@ -42,6 +42,7 @@ class AnswerRepository{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Supprimer toutes les réponses d'une question
       public function deleteByQuestion(int $questionId): bool
     {
         $stmt = $this->pdo->prepare(
