@@ -48,4 +48,12 @@ class QuizService
         return strtoupper(substr(md5(uniqid()), 0, 6));
     }
 
+
+    public function getTeacherQuizzes(int $teacherId): array
+    {
+        return $this->repo->allByTeacher($teacherId);
+    }
+
+
+
 }
