@@ -45,5 +45,7 @@ elseif ($action ==='submit_quiz'){
     $totalQuestions = count($correctAnswers);
 
     include $baseDir . '/src/Views/result.php';
+}else{
+    include $baseDir . '/src/Views/home.php';
 }
 ?>
