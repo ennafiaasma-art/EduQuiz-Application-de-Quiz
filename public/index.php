@@ -27,3 +27,14 @@ if ($action === 'start_quiz') {
    
     include $baseDir . '/src/Views/home.php';
 }
+elseif ($action ==='submit_quiz'){
+    $quizId = $_POST['quiz_id'] ?? 0;
+    $userAnswers = $_POST['answers'] ?? [];
+
+    $stmt = $db->prepare("SELECT id, question_id FROM answers WHERE question_id IN (SELECT id FROM questions WHERE quiz_id = :quiz_id) AND is_correct = 1");
+    $stmt->execute(['quiz_id' =>$quizId]);
+    $correctAnswersData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    
+}
+?>
