@@ -29,7 +29,7 @@ class QuestionRepository
 
     
 
-    public function update(int $id, string $question): bool {
+    public function modifier(int $id, string $question): bool {
          $stmt = $this->pdo->prepare(
             "UPDATE questions SET question = ? WHERE id = ?"
         );
@@ -38,5 +38,31 @@ class QuestionRepository
         
 
     }
+
+
+        public function effacer(int $id): bool
+        {
+            $stmt = $this->pdo->prepare(
+            "DELETE FROM questions WHERE id = ?"
+        );
+
+        return $stmt->execute([$id]);
+        }
+    
+           public function TrouverQuestionById(int $id): ?array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT * FROM questions WHERE id = ?"
+        );
+
+        $stmt->execute([$id]);
+
+        $question = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $question ?: null;
+    }
+        
+
+
 
     }
