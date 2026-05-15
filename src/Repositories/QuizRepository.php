@@ -48,4 +48,14 @@ class QuizRepository
         return $quiz ?: null;
     }
 
+    public function findByAccessCode(string $code)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM quizzes WHERE accesscode = ?");
+        $stmt->execute([$code]);
+
+        $quiz = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $quiz ?: null;
+    }
+
 }
