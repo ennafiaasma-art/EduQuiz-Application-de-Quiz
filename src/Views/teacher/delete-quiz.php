@@ -7,7 +7,7 @@ if (!isset($_SESSION['user'])) {
 }
 
 if (($_SESSION['user']['role_name'] ?? '') !== 'teacher') {
-    die('Access denied');
+    die('Access denied ');
 }
 
 require_once __DIR__ . "/../../../config/DB.php";
