@@ -43,5 +43,7 @@ elseif ($action ==='submit_quiz'){
     $quizService = new \App\Services\QuizService();
     $score = $quizService->calculateScore($userAnswers, $correctAnswers);
     $totalQuestions = count($correctAnswers);
+
+    include $baseDir . '/src/Views/result.php';
 }
 ?>
