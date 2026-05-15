@@ -124,4 +124,19 @@ class QuestionService
         }
     }
 
- }
+
+      public function countQuestionsByQuiz(int $quizId): int
+    {
+        if ($quizId <= 0) {
+            return 0;
+        }
+
+        try {
+            return $this->repo->countQuestionsByQuiz($quizId);
+        } catch (\Throwable $e) {
+            return 0;
+        }
+    }
+}
+
+ 
