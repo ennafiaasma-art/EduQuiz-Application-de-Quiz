@@ -18,43 +18,83 @@ class QuestionService
     }
 
     /**
-     * Create question
+     * Create question (requested API)
+     */
+    public function createQuestion(int $quizId, string $text): int
+    {
+        if ($quizId <= 0 || empty(trim($text))) {
+            return 0;
+        }
+
+        try {
+            return $this->repo->create($quizId, trim($text));
+        } catch (\Throwable $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Backward-compatible alias
      */
     public function create(int $quizId, string $question): int
     {
-        if (empty($question)) {
-            throw new \Exception("Question is required");
-        }
-
-        return $this->repo->create($quizId, $question);
+        return $this->createQuestion($quizId, $question);
     }
 
     /**
-     * Update question
+     * Update question (requested API)
+     */
+    public function updateQuestion(int $id, string $text): bool
+    {
+        if ($id <= 0 || empty(trim($text))) {
+            return false;
+        }
+
+        try {
+            if (!$this->repo->questionExists($id)) {
+                return false;
+            }
+
+            return $this->repo->update($id, trim($text));
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Backward-compatible alias
      */
     public function update(int $id, string $question): bool
     {
-        if (!$this->repo->questionExists($id)) {
-            throw new \Exception("Question not found");
-        }
-
-        if (empty($question)) {
-            throw new \Exception("Question is required");
-        }
-
-        return $this->repo->update($id, $question);
+        return $this->updateQuestion($id, $question);
     }
 
     /**
-     * Delete question
+     * Delete question (requested API)
+     */
+    public function deleteQuestion(int $id): bool
+    {
+        if ($id <= 0) {
+            return false;
+        }
+
+        try {
+            if (!$this->repo->questionExists($id)) {
+                return false;
+            }
+
+            return $this->repo->delete($id);
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Backward-compatible alias
      */
     public function delete(int $id): bool
     {
-        if (!$this->repo->questionExists($id)) {
-            throw new \Exception("Question not found");
-        }
-
-        return $this->repo->delete($id);
+        return $this->deleteQuestion($id);
     }
 
     /**
@@ -62,7 +102,15 @@ class QuestionService
      */
     public function findById(int $id): ?array
     {
-        return $this->repo->findById($id);
+        if ($id <= 0) {
+            return null;
+        }
+
+        try {
+            return $this->repo->findById($id);
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     /**
@@ -70,7 +118,15 @@ class QuestionService
      */
     public function getQuestionsByQuiz(int $quizId): array
     {
-        return $this->repo->getQuestionsByQuiz($quizId);
+        if ($quizId <= 0) {
+            return [];
+        }
+
+        try {
+            return $this->repo->getQuestionsByQuiz($quizId);
+        } catch (\Throwable $e) {
+            return [];
+        }
     }
 
     /**
@@ -78,6 +134,14 @@ class QuestionService
      */
     public function countQuestionsByQuiz(int $quizId): int
     {
-        return $this->repo->countQuestionsByQuiz($quizId);
+        if ($quizId <= 0) {
+            return 0;
+        }
+
+        try {
+            return $this->repo->countQuestionsByQuiz($quizId);
+        } catch (\Throwable $e) {
+            return 0;
+        }
     }
 }

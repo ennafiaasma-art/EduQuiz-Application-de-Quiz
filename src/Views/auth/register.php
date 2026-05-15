@@ -11,16 +11,16 @@ $error = "";
 
 try {
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
         $auth->register(
-            $_POST["name"] ?? '',
-            $_POST["email"] ?? '',
-            $_POST["password"] ?? '',
-            (int)($_POST["role"] ?? 0)
+            $_POST["name"] ,
+            $_POST["email"] ,
+            $_POST["password"] ,
+            (int)($_POST["role"] )
         );
 
         $message = "Account created successfully";
     }
+
 } catch (Exception $e) {
     $error = $e->getMessage();
 }
@@ -28,7 +28,7 @@ try {
 $sql = "SELECT * FROM roles";
 $pdo = DB::connect();
 $stmt = $pdo->query($sql);
-$roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$roles = $stmt->fetchAll(PDO::FETCH_OBJ);
 ?>
 
 <!DOCTYPE html>
@@ -79,8 +79,8 @@ $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <option value="">Select Role</option>
 
             <?php foreach ($roles as $role): ?>
-                <option value="<?= $role['id'] ?>">
-                    <?= $role['name'] ?>
+                <option value="<?= $role->id ?>">
+                    <?= $role->name ?>
                 </option>
             <?php endforeach; ?>
 

@@ -18,38 +18,67 @@ class AnswerService
     }
 
     /**
-     * Create answer
+     * Create answer (requested API)
      */
+    public function createAnswer(
+        int $questionId,
+        string $answer,
+        bool $isCorrect
+    ): bool {
+        if ($questionId <= 0 || empty(trim($answer))) {
+            return false;
+        }
+
+        try {
+            return $this->repo->create(
+                $questionId,
+                trim($answer),
+                $isCorrect
+            );
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+
     public function create(
         int $questionId,
         string $answer,
         bool $isCorrect
-    ): bool
-    {
-        if (empty(trim($answer))) {
-            throw new \Exception("Answer is required");
-        }
-
-        return $this->repo->create(
-            $questionId,
-            $answer,
-            $isCorrect
-        );
+    ): bool {
+        return $this->createAnswer($questionId, $answer, $isCorrect);
     }
 
-    /**
-     * Get answers by question
-     */
+
     public function getAnswersByQuestion(int $questionId): array
     {
-        return $this->repo->getAnswersByQuestion($questionId);
+        if ($questionId <= 0) {
+            return [];
+        }
+
+        try {
+            return $this->repo->getAnswersByQuestion($questionId);
+        } catch (\Throwable $e) {
+            return [];
+        }
     }
 
-    /**
-     * Delete all answers of question
-     */
+    public function deleteAnswersByQuestion(int $questionId): bool
+    {
+        if ($questionId <= 0) {
+            return false;
+        }
+
+        try {
+            return $this->repo->deleteByQuestion($questionId);
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
+
     public function deleteByQuestion(int $questionId): bool
     {
-        return $this->repo->deleteByQuestion($questionId);
+        return $this->deleteAnswersByQuestion($questionId);
     }
 }

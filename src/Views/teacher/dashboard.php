@@ -12,26 +12,25 @@ if ($_SESSION['user']['role_name'] !== 'teacher') {
 }
 
 require_once __DIR__ . "/../../../config/DB.php";
-require_once __DIR__ . "/../../Repositories/QuizRepository.php";
+require_once __DIR__ . "/../../Services/QuizService.php";
+require_once __DIR__ . "/../../Services/QuestionService.php";
 
-use Src\Repositories\QuizRepository;
+use Src\Services\QuizService;
+use Src\Services\QuestionService;
 
-$quizRepo = new QuizRepository();
-$pdo = \DB::connect();
+$quizService = new QuizService();
+$questionService = new QuestionService();
 
-$quizzes = $quizRepo->allByTeacher((int)$_SESSION['user']['id']);
+$quizzes = $quizService->getTeacherQuizzes((int)$_SESSION['user']['id']);
 $totalQuizzes = count($quizzes);
+$questionCounts = [];
+$totalQuestions = 0;
 
-$stmt = $pdo->prepare("
-    SELECT COUNT(qs.id) AS total
-    FROM questions qs
-    JOIN quizzes q ON qs.quiz_id = q.id
-    WHERE q.teacher_id = ?
-");
-
-$stmt->execute([(int)$_SESSION['user']['id']]);
-
-$totalQuestions = (int)$stmt->fetch(PDO::FETCH_OBJ)->total;
+foreach ($quizzes as $quiz) {
+    $count = $questionService->countQuestionsByQuiz((int)$quiz->id);
+    $questionCounts[(int)$quiz->id] = $count;
+    $totalQuestions += $count;
+}
 
 ?>
 
@@ -55,48 +54,11 @@ $totalQuestions = (int)$stmt->fetch(PDO::FETCH_OBJ)->total;
     </style>
 </head>
 
-<body class="bg-indigo-50 text-gray-800 min-h-screen">
+<body class="bg-[#0F172A] text-[#F8FAFC] min-h-screen font-sans">
 
 <div class="flex">
 
-    <!-- Sidebar -->
-    <aside class="w-64 bg-white shadow-lg min-h-screen">
-
-        <div class="p-6 border-b">
-            <h2 class="text-xl font-semibold text-indigo-600">
-                EduQuiz
-            </h2>
-            <p class="text-sm text-gray-500">Teacher Panel</p>
-        </div>
-
-        <nav class="p-6 space-y-2">
-
-            <a href="dashboard.php"
-               class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 text-indigo-700">
-                <i class="fa-solid fa-gauge"></i>
-                Dashboard
-            </a>
-
-            <a href="create-quiz.php"
-               class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-indigo-50">
-                <i class="fa-solid fa-plus"></i>
-                Create Quiz
-            </a>
-
-            <a href="add-question.php"
-               class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-indigo-50">
-                <i class="fa-solid fa-circle-question"></i>
-                Add Question
-            </a>
-
-            <a href="my-quizzes.php"
-               class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-indigo-50">
-                <i class="fa-solid fa-list"></i>
-                My Quizzes
-            </a>
-
-        </nav>
-    </aside>
+    <?php require_once __DIR__ . '/../../includes/navbar.php'; ?>
 
     <!-- Main -->
     <div class="flex-1 p-8">
@@ -105,16 +67,16 @@ $totalQuestions = (int)$stmt->fetch(PDO::FETCH_OBJ)->total;
         <header class="flex items-center justify-between mb-6">
 
             <div>
-                <h1 class="text-2xl font-bold text-gray-900">
+                <h1 class="text-3xl font-bold tracking-tight text-white">
                     Welcome, <?= htmlspecialchars($_SESSION['user']['name']); ?>
                 </h1>
-                <p class="text-sm text-gray-500">
+                <p class="text-sm text-[#CBD5E1] mt-2">
                     Overview of your quizzes
                 </p>
             </div>
 
             <a href="../auth/logout.php"
-               class="px-4 py-2 bg-white rounded-lg shadow hover:bg-gray-100 text-sm">
+               class="px-5 py-2.5 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-red-500/20 font-medium">
                 Logout
             </a>
 
@@ -123,104 +85,102 @@ $totalQuestions = (int)$stmt->fetch(PDO::FETCH_OBJ)->total;
         <main class="content-max mx-auto">
 
             <!-- Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
 
-                <div class="bg-white rounded-xl p-5 shadow">
-                    <p class="text-sm text-gray-500">Total Quizzes</p>
-                    <p class="text-2xl font-semibold text-indigo-600 mt-2">
-                        <i class="fa-solid fa-book"></i>
-                        <?= $totalQuizzes; ?>
-                    </p>
+                <div class="bg-[#1E293B] rounded-xl p-6 shadow-lg border border-[#475569]/30 hover:shadow-2xl hover:border-[#475569]/60 transition-all duration-300 transform hover:-translate-y-1 hover:bg-[#334155]/50">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] text-white rounded-lg flex items-center justify-center text-xl shadow-lg">
+                            <i class="fa-solid fa-book"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-[#CBD5E1]">Total Quizzes</p>
+                            <p class="text-2xl font-bold text-white mt-1"><?= $totalQuizzes; ?></p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-5 shadow">
-                    <p class="text-sm text-gray-500">Total Questions</p>
-                    <p class="text-2xl font-semibold text-indigo-600 mt-2">
-                        <i class="fa-solid fa-circle-question"></i>
-                        <?= $totalQuestions; ?>
-                    </p>
+                <div class="bg-[#1E293B] rounded-xl p-6 shadow-lg border border-[#475569]/30 hover:shadow-2xl hover:border-[#475569]/60 transition-all duration-300 transform hover:-translate-y-1 hover:bg-[#334155]/50">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-[#10B981] to-[#059669] text-white rounded-lg flex items-center justify-center text-xl shadow-lg">
+                            <i class="fa-solid fa-circle-question"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-[#CBD5E1]">Total Questions</p>
+                            <p class="text-2xl font-bold text-white mt-1"><?= $totalQuestions; ?></p>
+                        </div>
+                    </div>
                 </div>
 
             </div>
 
             <!-- Quizzes -->
-            <div class="bg-white rounded shadow p-6">
+            <div class="bg-[#1E293B] rounded-xl shadow-lg border border-[#475569]/30 p-6">
 
-                <div class="flex justify-between items-center mb-5">
+                <div class="flex justify-between items-center mb-6">
 
-                    <h3 class="text-xl font-bold">
+                    <h3 class="text-xl font-bold text-white">
                         My Quizzes
                     </h3>
 
                     <a href="create-quiz.php"
-                       class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
-                        <i class="fa-solid fa-plus"></i> Create Quiz
+                       class="bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] text-white px-5 py-2.5 rounded-lg hover:from-[#1D4ED8] hover:to-[#1E40AF] transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/20 font-medium">
+                        <i class="fa-solid fa-plus mr-2"></i> Create Quiz
                     </a>
 
                 </div>
 
                 <?php if (empty($quizzes)): ?>
 
-                    <p class="text-gray-500">No quizzes found</p>
+                    <p class="text-[#CBD5E1]">No quizzes found</p>
 
                 <?php else: ?>
 
-                    <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                         <?php foreach ($quizzes as $quiz): ?>
 
                             <?php
-                            $stmt = $pdo->prepare("
-                                SELECT COUNT(*) AS total
-                                FROM questions
-                                WHERE quiz_id = ?
-                            ");
-
-                            $stmt->execute([$quiz->id]);
-
-                            $questionCount = (int)$stmt
-                                    ->fetch(PDO::FETCH_OBJ)
-                                    ->total;
+                            $questionCount = (int)($questionCounts[(int)$quiz->id] ?? 0);
                             ?>
 
-                            <div class="border rounded p-5">
+                            <div class="bg-[#1E293B] border border-[#475569]/30 rounded-xl p-6 shadow-lg hover:shadow-2xl hover:border-[#475569]/60 transition-all duration-300 transform hover:-translate-y-1 hover:bg-[#334155]/40">
 
-                                <h4 class="text-lg font-bold mb-2">
-                                    <?= htmlspecialchars($quiz->title) ?>
-                                </h4>
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-white mb-2">
+                                            <?= htmlspecialchars($quiz->title) ?>
+                                        </h4>
+                                        <p class="text-[#CBD5E1] mb-4 leading-relaxed">
+                                            <?= htmlspecialchars($quiz->description) ?>
+                                        </p>
+                                    </div>
 
-                                <p class="text-gray-600 mb-3">
-                                    <?= htmlspecialchars($quiz->description) ?>
-                                </p>
-
-                                <div class="flex gap-3 mb-4">
-
-                                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded text-sm">
-                                        <i class="fa-solid fa-key"></i>
-                                        <?= htmlspecialchars($quiz->accesscode) ?>
-                                    </span>
-
-                                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded text-sm">
-                                        <?= $questionCount ?> Questions
-                                    </span>
-
+                                    <div class="text-right shrink-0">
+                                        <span class="inline-flex items-center gap-2 bg-gradient-to-r from-[#2563EB]/20 to-[#60A5FA]/10 text-[#60A5FA] px-3 py-1.5 rounded-lg text-sm font-semibold border border-[#2563EB]/30">
+                                            <i class="fa-solid fa-key"></i>
+                                            <?= htmlspecialchars($quiz->accesscode) ?>
+                                        </span>
+                                        <div class="mt-3 text-sm text-[#CBD5E1]">
+                                            <?= $questionCount ?> Questions
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="flex gap-3">
+                                <div class="flex gap-3 mt-5 pt-4 border-t border-[#475569]/30">
 
                                     <a href="edit-quiz.php?id=<?= $quiz->id ?>"
-                                       class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 text-sm">
+                                       class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 py-2 rounded-lg hover:from-amber-600 hover:to-amber-700 transition-all duration-300 transform hover:scale-105 text-sm font-medium shadow-lg shadow-amber-500/20">
                                         <i class="fa-solid fa-pen"></i> Edit
                                     </a>
 
                                     <a href="delete-quiz.php?id=<?= $quiz->id ?>"
-                                       class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 text-sm">
+                                       class="inline-flex items-center gap-2 bg-gradient-to-r from-red-600/80 to-red-700/80 text-white px-4 py-2 rounded-lg hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 text-sm font-medium shadow-lg shadow-red-500/10">
                                         <i class="fa-solid fa-trash"></i> Delete
                                     </a>
 
                                     <a href="quiz-questions.php?id=<?= $quiz->id ?>"
-                                       class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">
-                                        <i class="fa-solid fa-eye"></i> Show Questions
+                                       class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2 rounded-lg hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 transform hover:scale-105 text-sm font-medium shadow-lg shadow-emerald-500/20">
+                                        <i class="fa-solid fa-eye"></i> View
                                     </a>
 
                                 </div>
