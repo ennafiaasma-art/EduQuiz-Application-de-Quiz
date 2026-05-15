@@ -18,7 +18,7 @@ if ($action === 'start_quiz') {
     $quiz = $quizRepo->findByCode($code);
 
     if ($quiz) {
-        $questions = $quizRepo->getFullQuizData($quiz['id']);
+        $questions = $quizRepo->getFullQuizData($quiz->id);
         include $baseDir . '/src/Views/take_quiz.php';
     } else {
         echo "Code incorrect !";

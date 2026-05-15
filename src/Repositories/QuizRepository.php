@@ -23,6 +23,6 @@ class QuizRepository {
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute(['quiz_id' => $quizId]);
-        return $stmt->fetchAll(PDO::FETCH_GROUP); 
+        return $stmt->fetchAll(PDO::FETCH_OBJ); 
     }
 }
