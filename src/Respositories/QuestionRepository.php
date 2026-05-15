@@ -6,13 +6,12 @@ require_once __DIR__ . "/../../config/DB.php";
 
 use PDO;
 
-class AnswerRepository
+class QuestionRepository
 {
     private $pdo;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->pdo = \DB::connect();
-    }
-
+    }  
+    
     }
