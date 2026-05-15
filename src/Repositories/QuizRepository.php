@@ -3,9 +3,9 @@ namespace App\Repositories;
 use PDO;
 
 class QuizRepository {
-    private PDO $db;
+    private ?PDO $db;
 
-    public function __construct($db) {
+    public function __construct(?PDO $db) {
         $this->db = $db;
     }
 
