@@ -30,6 +30,8 @@ class AnswerRepository{
         ]);
     }
 
+         // Récupérer les réponses d'une question
+
     public function Rec_Reponses_Question(int $questionId): array {
         $stmt = $this->pdo->prepare(
             "SELECT * FROM answers WHERE question_id = ? ORDER BY id ASC"
@@ -38,6 +40,15 @@ class AnswerRepository{
         $stmt->execute([$questionId]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+      public function deleteByQuestion(int $questionId): bool
+    {
+        $stmt = $this->pdo->prepare(
+            "DELETE FROM answers WHERE question_id = ?"
+        );
+
+        return $stmt->execute([$questionId]);
     }
 
 
