@@ -54,6 +54,18 @@ class QuizService
         return $this->repo->allByTeacher($teacherId);
     }
 
+    public function updateQuiz(int $id, string $title, string $description) {
+
+        if (empty($title) || empty($description)) {
+            throw new \Exception("All fields are required");
+        }
+
+        return $this->repo->update(
+            $id,
+            $title,
+            $description
+        );
+    }
 
 
 }
