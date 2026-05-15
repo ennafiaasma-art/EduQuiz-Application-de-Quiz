@@ -40,4 +40,28 @@ class AnswerService
         }
     }
 
+public function create(
+        int $questionId,
+        string $answer,
+        bool $isCorrect
+    ): bool {
+        return $this->createAnswer($questionId, $answer, $isCorrect);
+    }
+
+
+
+     public function getAnswersByQuestion(int $questionId): array
+    {
+        if ($questionId <= 0) {
+            return [];
+        }
+
+        try {
+            return $this->repo->getAnswersByQuestion($questionId);
+        } catch (\Throwable $e) {
+            return [];
+        }
+    }
+
+
       }
