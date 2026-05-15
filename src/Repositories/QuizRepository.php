@@ -58,4 +58,14 @@ class QuizRepository
         return $quiz ?: null;
     }
 
+    public function update(int $id, string $title, string $description)
+    {
+        $stmt = $this->pdo->prepare(
+            "UPDATE quizzes SET title = ?, description = ? WHERE id = ?"
+        );
+
+        return $stmt->execute([$title, $description, $id]);
+    }
+
+
 }
