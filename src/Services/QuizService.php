@@ -19,5 +19,28 @@ class QuizService
         $this->repo = new QuizRepository();
     }
 
+    public function createQuiz(string $title, string $description, int $teacherId) {
+        if (empty($title) || empty($description)) {
+            return false;
+        }
+
+        try {
+            $accessCode = $this->generateAccessCode();
+
+            $quiz = new Quiz(
+                $title,
+                $description,
+                $accessCode,
+                $teacherId
+            );
+
+            if ($this->repo->create($quiz)) {
+                return $accessCode;
+            }
+            return false;
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
 
 }
