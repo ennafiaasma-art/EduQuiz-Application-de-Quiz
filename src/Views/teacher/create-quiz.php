@@ -22,9 +22,9 @@ $message = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $code = $service->createQuiz(
-        $_POST['title'] ?? '',
-        $_POST['description'] ?? '',
-        (int)($_SESSION['user']['id'] ?? 0)
+            $_POST['title'] ,
+            $_POST['description'] ,
+            (int)($_SESSION['user']['id'])
     );
 
     if ($code) {

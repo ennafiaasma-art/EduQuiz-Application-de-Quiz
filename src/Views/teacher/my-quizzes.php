@@ -35,7 +35,7 @@ $quizzes = $quizService->getTeacherQuizzes((int)$_SESSION['user']['id']);
 
 <div class="flex">
 
-    <?php require_once __DIR__ . '/../../includes/navbar.php'; ?>
+
 
     <div class="flex-1 p-8">
 

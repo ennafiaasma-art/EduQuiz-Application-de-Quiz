@@ -24,15 +24,15 @@ $quiz = $id > 0 ? $service->getQuizById($id) : null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $updated = $service->updateQuiz(
-        (int)($_POST['id'] ?? 0),
-        $_POST['title'] ?? '',
-        $_POST['description'] ?? ''
+        (int)($_POST['id'] ),
+        $_POST['title'] ,
+        $_POST['description']
     );
 
     if ($updated) {
         $message = "Quiz updated successfully";
     }
-    $quiz = $service->getQuizById((int)($_POST['id'] ?? 0));
+    $quiz = $service->getQuizById((int)($_POST['id'] ));
 }
 ?>
 
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="flex">
 
-    <?php require_once __DIR__ . '/../../includes/navbar.php'; ?>
+
 
     <div class="flex-1 p-8">
 

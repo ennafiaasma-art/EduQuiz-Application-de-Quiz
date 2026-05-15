@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="flex">
 
-    <?php require_once __DIR__ . '/../../includes/navbar.php'; ?>
+
 
     <div class="flex-1 p-8">
 

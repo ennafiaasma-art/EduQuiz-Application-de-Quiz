@@ -33,9 +33,7 @@ class QuestionService
         }
     }
 
-    /**
-     * Backward-compatible alias
-     */
+
     public function create(int $quizId, string $question): int
     {
         return $this->createQuestion($quizId, $question);
