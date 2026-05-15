@@ -72,6 +72,33 @@ class QuestionRepository
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+     public function countQuestionsByQuiz(int $quizId): int
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT COUNT(*) AS total FROM questions WHERE quiz_id = ?"
+        );
+
+        $stmt->execute([$quizId]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return (int)($result['total'] ?? 0);
+    }
+
+    /**
+     * Check whether a question exists.
+     */
+    public function questionExists(int $id): bool
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT id FROM questions WHERE id = ?"
+        );
+
+        $stmt->execute([$id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
+    }
         
 
 
