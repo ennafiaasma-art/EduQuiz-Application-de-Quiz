@@ -38,7 +38,10 @@ elseif ($action ==='submit_quiz'){
     $correctAnswers = [];
     foreach ($correctAnswersData as $row){
         $correctAnswers[$row['question_id']] = $row['id'];
-        
     }
+    require_once $baseDir . '/src/Services/QuizService.php';
+    $quizService = new \App\Services\QuizService();
+    $score = $quizService->calculateScore($userAnswers, $correctAnswers);
+    $totalQuestions = count($correctAnswers);
 }
 ?>
