@@ -1,22 +1,21 @@
 <?php
 namespace App\Entities;
 
-class Question{
+class Question {
     private int $id;
     private string $questionText;
-    private arry $answers = [];
+    private array $answers = []; 
 
-    public function __construct(int $id, string $text){
+    public function __construct(int $id, string $text) {
         $this->id = $id;
-        $this->questionText= $text;
+        $this->questionText = $text;
     }
 
-    public function getId(): int {return $this->id;}
-    public function getQuestionText(): string { return $this->questionText;}
+    public function getId(): int { return $this->id; }
+    public function getQuestionText(): string { return $this->questionText; }
 
-    public function addAnswer($answer): void{
+    public function addAnswer($answer): void {
         $this->answers[] = $answer;
     }
-    public function getAnswers(): arry { return $this->answers;}
-
+    public function getAnswers(): array { return $this->answers; } 
 }
