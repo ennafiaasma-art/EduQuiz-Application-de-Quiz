@@ -20,5 +20,5 @@ use Src\Services\QuestionService;
 use Src\Services\AnswerService;
 
 $quizService = new QuizService();
-$questionService = new QuestionService();
-$answerService = new AnswerService();
+$QuestionService = new QuestionService();
+$AnswerService = new AnswerService();
