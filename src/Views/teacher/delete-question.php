@@ -14,3 +14,5 @@ require_once __DIR__ . "/../../../config/DB.php";
 require_once __DIR__ . "/../../Services/QuizService.php";
 
 use Src\Services\QuizService;
+
+$service = new QuizService();
