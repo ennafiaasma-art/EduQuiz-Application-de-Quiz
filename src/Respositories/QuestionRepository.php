@@ -29,7 +29,7 @@ class QuestionRepository
 
     
 
-    public function modifier(int $id, string $question): bool {
+    public function update(int $id, string $question): bool {
          $stmt = $this->pdo->prepare(
             "UPDATE questions SET question = ? WHERE id = ?"
         );

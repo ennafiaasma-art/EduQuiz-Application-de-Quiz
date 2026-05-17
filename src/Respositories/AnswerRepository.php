@@ -32,7 +32,7 @@ class AnswerRepository{
 
          // Récupérer les réponses d'une question
 
-    public function Rec_Reponses_Question(int $questionId): array {
+    public function getAnswersByQuestion(int $questionId): array {
         $stmt = $this->pdo->prepare(
             "SELECT * FROM answers WHERE question_id = ? ORDER BY id ASC"
         );
