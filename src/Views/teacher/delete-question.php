@@ -16,3 +16,11 @@ require_once __DIR__ . "/../../Services/QuizService.php";
 use Src\Services\QuizService;
 
 $service = new QuizService();
+
+
+if (isset($_GET['id'])) {
+    $service->deleteQuiz((int)$_GET['id']);
+}
+
+header("Location: dashboard.php");
+exit;
