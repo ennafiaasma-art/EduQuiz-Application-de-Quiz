@@ -31,9 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     );
 
     if ($updated) {
-        $message = "La question est modifier avec succé";
+       $message = "Quiz modifié avec succès";
     }
-    $quiz = $service->getQuizById((int)($_POST['id'] ?? 0));
+  $userId = (int)$_SESSION['user']['id'];
+
+$quiz = $service->getQuizById($id);
+
+if (!$quiz || $quiz->teacher_id !== $userId) {
+    die('accés non autorisé');
+}
 }
 ?>
 
