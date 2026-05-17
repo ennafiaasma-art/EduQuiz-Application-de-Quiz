@@ -33,7 +33,6 @@ class QuestionService
         }
     }
 
-
     public function create(int $quizId, string $question): int
     {
         return $this->createQuestion($quizId, $question);
