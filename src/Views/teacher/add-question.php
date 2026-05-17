@@ -49,11 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         }
 
-        $message = "Question added successfully";
+        $message = "Question est ajoutée avec succé";
 
     } else {
 
-        $message = "Unable to add question";
+        $message = "Tu peux pas ajouter une question";
     }
 }
 
