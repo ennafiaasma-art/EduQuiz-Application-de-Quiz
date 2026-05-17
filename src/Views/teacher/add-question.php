@@ -26,29 +26,38 @@ $AnswerService = new AnswerService();
 
 $message = "";
 
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $answers = $_POST['answers'] ?? [];
     $correct = $_POST['correct'] ?? null;
 
-    $questionId = $questionService->createQuestion(
+    $questionId = $QuestionService->createQuestion(
         (int)($_POST['quiz_id'] ?? 0),
         $_POST['question'] ?? ''
     );
 
+    if ($correct === null) {
+    $message = "Choisir une réponse correcte";
+}
+
     if ($questionId > 0) {
 
-        foreach ($answers as $index => $answer) {
+      foreach ($answers as $index => $answer) {
 
-            $isCorrect = ($correct == $index);
+    if (empty(trim($answer))) {
+        continue;
+    }
 
-            $answerService->createAnswer(
-                $questionId,
-                $answer,
-                $isCorrect
-            );
-        }
+    $isCorrect = ($correct == $index);
 
+    $AnswerService->createAnswer(
+        $questionId,
+        trim($answer),
+        $isCorrect
+    );
+}
         $message = "Question est ajoutée avec succé";
 
     } else {
