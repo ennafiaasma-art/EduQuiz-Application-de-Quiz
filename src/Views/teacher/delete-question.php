@@ -18,8 +18,11 @@ use Src\Services\QuizService;
 $service = new QuizService();
 
 
-if (isset($_GET['id'])) {
-    $service->deleteQuiz((int)$_GET['id']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $quizId = (int)($_POST['id'] ?? 0);
+
+    $service->deleteQuiz($quizId);
 }
 
 header("Location: dashboard.php");
